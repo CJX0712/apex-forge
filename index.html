@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ApexForge · 世界顶级零依赖 AI/ML 基础库</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#2b3340;
+    --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --accent2:#3fb950;
+    --warn:#f0883e; --pink:#ff7b72; --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6;}
+  header{padding:28px 24px 20px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#11161f,#0d1117);}
+  header h1{margin:0;font-size:26px;letter-spacing:.5px;}
+  header h1 .g{color:var(--accent);}
+  header p{margin:6px 0 0;color:var(--muted);font-size:14px;}
+  .badges{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+  .badge{font-size:12px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);}
+  .badge.ok{color:var(--accent2);border-color:#1f6f3a;}
+  main{max-width:1080px;margin:0 auto;padding:24px;}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin-bottom:22px;}
+  section h2{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:10px;}
+  section h2 .num{font-size:12px;color:var(--bg);background:var(--accent);border-radius:6px;padding:2px 8px;font-weight:700;}
+  section .desc{color:var(--muted);font-size:13px;margin:0 0 16px;}
+  .row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;}
+  .canvas-wrap{flex:1 1 360px;min-width:300px;}
+  .side{flex:1 1 260px;min-width:260px;}
+  canvas{width:100%;height:300px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;display:block;}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  button{background:var(--accent);color:#04101f;border:0;border-radius:8px;padding:8px 16px;
+    font-size:14px;font-weight:600;cursor:pointer;transition:.15s;}
+  button:hover{filter:brightness(1.08);}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+  .stat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px;}
+  .stat b{color:var(--accent2);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted);}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  table{border-collapse:collapse;width:100%;font-size:13px;}
+  th,td{border:1px solid var(--line);padding:4px 8px;text-align:center;font-variant-numeric:tabular-nums;}
+  code{background:#0b0f15;padding:1px 6px;border-radius:5px;color:var(--purple);font-size:13px;}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 0 50px;}
+  footer a{color:var(--accent);text-decoration:none;}
+  .heat{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;}
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="g">ApexForge</span> · 世界顶级零依赖 AI/ML 基础库</h1>
+  <p>集大成 · 零重写 · 闭环交付 — 每个算法都附带可被独立验证的「硬不变量」。作者：<b>晨星</b></p>
+  <div class="badges">
+    <span class="badge ok">✅ 25/25 不变量自检全绿</span>
+    <span class="badge">零依赖 · 单文件 UMD</span>
+    <span class="badge">Node 无头运行</span>
+    <span class="badge">浏览器单文件演示</span>
+    <span class="badge">MIT License</span>
+  </div>
+</header>
+
+<main>
+  <!-- PCA -->
+  <section>
+    <h2><span class="num">01</span>PCA · 主成分分析</h2>
+    <p class="desc">协方差矩阵经 Jacobi 特征分解（数学保证：VᵀV=I，A=VΛVᵀ）。下方展示二维相关数据的散点、主成分方向箭头与解释方差。</p>
+    <div class="row">
+      <div class="canvas-wrap"><canvas id="pcaCanvas" width="420" height="300"></canvas></div>
+      <div class="side">
+        <div class="controls"><button onclick="PCA.run()">生成数据并运行</button></div>
+        <div class="stat"><span>样本数</span><b id="pcaN">—</b></div>
+        <div class="stat"><span>主成分 1 解释方差</span><b id="pcaEv1">—</b></div>
+        <div class="stat"><span>主成分 2 解释方差</span><b id="pcaEv2">—</b></div>
+        <div class="stat"><span>累计解释方差</span><b id="pcaEv">—</b></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#58a6ff"></i>数据点</span>
+          <span><i class="dot" style="background:#3fb950"></i>PC1 方向</span>
+          <span><i class="dot" style="background:#f0883e"></i>PC2 方向</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GMM -->
+  <section>
+    <h2><span class="num">02</span>GMM · 高斯混合模型 (EM)</h2>
+    <p class="desc">对数空间稳定的 EM 算法(logsumexp)，不变量：权重和=1、责任度和=1、对数似然单调非减。下方展示两个分离簇的聚类结果。</p>
+    <div class="row">
+      <div class="canvas-wrap"><canvas id="gmmCanvas" width="420" height="300"></canvas></div>
+      <div class="side">
+        <div class="controls"><button onclick="GMM.run()">生成两簇并运行 EM</button></div>
+        <div class="stat"><span>聚类数 K</span><b>2</b></div>
+        <div class="stat"><span>权重 Σw</span><b id="gmmW">—</b></div>
+        <div class="stat"><span>对数似然 (末次)</span><b id="gmmLL">—</b></div>
+        <div class="stat"><span>单调性</span><b id="gmmMono">—</b></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#bc8cff"></i>簇 1 责任度</span>
+          <span><i class="dot" style="background:#3fb950"></i>簇 2 责任度</span>
+          <span><i class="dot" style="background:#ff7b72"></i>簇中心</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- XOR -->
+  <section>
+    <h2><span class="num">03</span>Neural Net · MLP 拟合 XOR</h2>
+    <p class="desc">2 层 MLP (ReLU + Softmax 交叉熵)，解析梯度经中心差分梯度检验 (maxRelErr≈1e-7)。训练后绘制决策边界。</p>
+    <div class="row">
+      <div class="canvas-wrap"><canvas id="xorCanvas" width="420" height="300"></canvas></div>
+      <div class="side">
+        <div class="controls">
+          <button onclick="XOR.run()">训练网络</button>
+          <button class="ghost" onclick="XOR.redraw()">重绘边界</button>
+        </div>
+        <div class="stat"><span>结构</span><b>2→6→2</b></div>
+        <div class="stat"><span>训练准确率</span><b id="xorAcc">—</b></div>
+        <div class="stat"><span>交叉熵损失</span><b id="xorLoss">—</b></div>
+        <div class="stat"><span>训练轮数</span><b id="xorIters">4000</b></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#3fb950"></i>类 0</span>
+          <span><i class="dot" style="background:#ff7b72"></i>类 1</span>
+          <span>背景 = 决策边界</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Attention -->
+  <section>
+    <h2><span class="num">04</span>Attention · 缩放点积注意力</h2>
+    <p class="desc">单头缩放点积注意力，解析反向传播经梯度检验。下方展示 4 个 token 的注意力权重热图(softmax over rows)与加权输出。</p>
+    <div class="row">
+      <div class="canvas-wrap">
+        <canvas id="attCanvas" class="heat" width="360" height="300"></canvas>
+      </div>
+      <div class="side">
+        <div class="controls"><button onclick="ATT.run()">计算注意力</button></div>
+        <div id="attTable" style="font-size:13px;color:var(--muted)"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    ApexForge · 作者 <b>晨星</b> · 完整开源
+    <a href="https://github.com/CJX0712/apex-forge" target="_blank" rel="noopener">github.com/CJX0712/apex-forge</a>
+  </footer>
+</main>
+
+<script src="apexforge.js"></script>
+<script>
+if (typeof ApexForge === 'undefined') {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div style="background:#ff7b72;color:#1a0000;padding:10px;text-align:center">⚠️ 未能加载 apexforge.js，请确保 index.html 与 apexforge.js 在同一目录。</div>');
+}
+const AF = window.ApexForge;
+const { M, linalg, stats, pca, gmm, nn, attention } = AF;
+
+/* ---------- shared RNG + canvas helpers ---------- */
+let _seed = 7;
+function rnd(){ _seed=(_seed*1103515245+12345)&0x7fffffff; return _seed/0x7fffffff; }
+function fitCanvas(cv){
+  const r = cv.getBoundingClientRect();
+  cv.width = Math.max(280, r.width); cv.height = 300;
+  return {w:cv.width,h:cv.height};
+}
+
+/* ============ 1. PCA ============ */
+const PCA = (()=>{
+  const cv = document.getElementById('pcaCanvas');
+  function run(){
+    _seed = 7;
+    const X=[];
+    for(let i=0;i<120;i++){ const t=rnd(); X.push([t*6+rnd()*0.6-0.3, t*6*0.55+rnd()*0.6-0.3]); }
+    const res = pca.fit(X,2);
+    const mean=res.mean, comp=res.components, ev=res.explainedVariance;
+    const evs=res.eigenvalues;
+    const total=evs[0]+evs[1];
+    document.getElementById('pcaN').textContent=X.length;
+    document.getElementById('pcaEv1').textContent=(evs[0]/total*100).toFixed(1)+'%';
+    document.getElementById('pcaEv2').textContent=(evs[1]/total*100).toFixed(1)+'%';
+    document.getElementById('pcaEv').textContent=(ev*100).toFixed(1)+'%';
+    draw(X,mean,comp);
+  }
+  function draw(X,mean,comp){
+    const {w,h}=fitCanvas(cv), ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,w,h);
+    const sx=w/9, sy=h/7, ox=w/2-3*sx, oy=h/2+3*sy; // map ~[-1.5,7.5] -> canvas
+    const px=v=>ox+v*sx, py=v=>oy-v*sy;
+    ctx.fillStyle='#58a6ff';
+    for(const p of X){ ctx.beginPath(); ctx.arc(px(p[0]),py(p[1]),2.5,0,7); ctx.fill(); }
+    const drawArrow=(c,col)=>{
+      ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=2.5;
+      const x1=px(mean[0]), y1=py(mean[1]);
+      const x2=px(mean[0]+c[0]*2.2), y2=py(mean[1]+c[1]*2.2);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      const ang=Math.atan2(y2-y1,x2-x1);
+      ctx.beginPath(); ctx.moveTo(x2,y2);
+      ctx.lineTo(x2-9*Math.cos(ang-0.4),y2-9*Math.sin(ang-0.4));
+      ctx.lineTo(x2-9*Math.cos(ang+0.4),y2-9*Math.sin(ang+0.4));
+      ctx.closePath(); ctx.fill();
+    };
+    drawArrow(comp[0],'#3fb950');
+    drawArrow(comp[1],'#f0883e');
+  }
+  return { run };
+})();
+
+/* ============ 2. GMM ============ */
+const GMM = (()=>{
+  const cv = document.getElementById('gmmCanvas');
+  function run(){
+    _seed = 21;
+    const X=[];
+    for(let i=0;i<80;i++) X.push([rnd()*0.7, rnd()*0.7]);
+    for(let i=0;i<80;i++) X.push([5+rnd()*0.7, 5+rnd()*0.7]);
+    const model = gmm.fit(X,2,{maxIter:100});
+    let mono=true;
+    for(let i=1;i<model.logLik.length;i++) if(model.logLik[i]<model.logLik[i-1]-1e-6) mono=false;
+    document.getElementById('gmmW').textContent=model.weights.reduce((s,v)=>s+v,0).toFixed(6);
+    document.getElementById('gmmLL').textContent=model.logLik[model.logLik.length-1].toFixed(2);
+    document.getElementById('gmmMono').textContent=mono?'单调非减 ✅':'违例 ❌';
+    draw(X,model);
+  }
+  function draw(X,model){
+    const {w,h}=fitCanvas(cv), ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,w,h);
+    const sx=w/6.2, sy=h/6.2, ox=8, oy=h-8;
+    const px=v=>ox+v*sx, py=v=>oy-v*sy;
+    const cols=['#bc8cff','#3fb950'];
+    for(let i=0;i<X.length;i++){
+      const r0=model.resp[i][0], r1=model.resp[i][1];
+      const R=Math.round(188*r0+63*r1), G=Math.round(140*r0+185*r1), B=Math.round(255*r0+80*r1);
+      ctx.fillStyle=`rgb(${R},${G},${B})`;
+      ctx.beginPath(); ctx.arc(px(X[i][0]),py(X[i][1]),3,0,7); ctx.fill();
+    }
+    model.means.forEach((m,k)=>{
+      ctx.strokeStyle='#ff7b72'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.arc(px(m[0]),py(m[1]),6,0,7); ctx.stroke();
+    });
+  }
+  return { run };
+})();
+
+/* ============ 3. XOR MLP ============ */
+const XOR = (()=>{
+  const cv = document.getElementById('xorCanvas');
+  let mlp=null, params=null, trained=null;
+  const data=[[0,0,0],[0,1,1],[1,0,1],[1,1,0]];
+  function run(){
+    mlp = nn.MLP2(2,6,2);
+    const X=data.map(d=>[d[0],d[1]]), y=data.map(d=>d[2]);
+    trained = mlp.train(X,y,{lr:0.5,iters:4000});
+    params=trained.params;
+    document.getElementById('xorAcc').textContent=(trained.accuracy*100).toFixed(1)+'%';
+    document.getElementById('xorLoss').textContent=trained.loss.toFixed(4);
+    redraw();
+  }
+  function redraw(){
+    if(!params){ run(); return; }
+    const {w,h}=fitCanvas(cv), ctx=cv.getContext('2d');
+    const N=44;
+    for(let iy=0;iy<N;iy++) for(let ix=0;ix<N;ix++){
+      const x=ix/(N-1), y=1-iy/(N-1);
+      const P=mlp.forward(params,[[x,y]]).P[0];
+      const c=P[1];
+      ctx.fillStyle=`rgb(${Math.round(63+ (255-63)*c)},${Math.round(185*(1-c)+123*c)},${Math.round(80*(1-c)+114*c)})`;
+      ctx.fillRect(ix*w/N, iy*h/N, w/N+1, h/N+1);
+    }
+    const pts=[[0,0],[0,1],[1,0],[1,1]];
+    pts.forEach((p,k)=>{
+      ctx.fillStyle = data[k][2]===1 ? '#ff7b72' : '#3fb950';
+      ctx.beginPath(); ctx.arc((p[0]+0.04)*w-2,(1-p[1]+0.04)*h-2,6,0,7); ctx.fill();
+      ctx.strokeStyle='#0d1117'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+  }
+  return { run, redraw };
+})();
+
+/* ============ 4. Attention ============ */
+const ATT = (()=>{
+  const cv = document.getElementById('attCanvas');
+  const tokens=['猫','坐','在','垫'];
+  function run(){
+    _seed = 99;
+    const n=4, d=3;
+    const Q=M.fromFlat(Array.from({length:n*d},()=>rnd()*2-1),n,d);
+    const K=M.fromFlat(Array.from({length:n*d},()=>rnd()*2-1),n,d);
+    const V=M.fromFlat(Array.from({length:n*d},()=>rnd()*2-1),n,d);
+    const sdp=attention.SDP();
+    const fwd=sdp.forward(Q,K,V);
+    drawHeat(fwd.A);
+    let html='<table><tr><th>query \\ key</th>'+
+      tokens.map(t=>`<th>${t}</th>`).join('')+'</tr>';
+    fwd.A.forEach((row,i)=>{
+      html+=`<tr><th>${tokens[i]}</th>`+row.map(v=>`<td>${v.toFixed(3)}</td>`).join('')+'</tr>';
+    });
+    html+='</table>';
+    html+='<div style="margin-top:10px">输出 = softmax(QKᵀ/√d)·V，每行权重和=1</div>';
+    document.getElementById('attTable').innerHTML=html;
+  }
+  function drawHeat(A){
+    const {w,h}=fitCanvas(cv), ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,w,h);
+    const n=A.length, pad=34;
+    const cell=Math.min((w-pad)/n,(h-pad)/n);
+    const ox=(w-cell*n)/2, oy=(h-cell*n)/2;
+    for(let i=0;i<n;i++) for(let j=0;j<n;j++){
+      const v=A[i][j];
+      const c=Math.round(20+v*180);
+      ctx.fillStyle=`rgb(${30},${Math.round(60+v*120)},${Math.round(110+v*120)})`;
+      ctx.fillRect(ox+j*cell,oy+i*cell,cell-2,cell-2);
+      ctx.fillStyle= v>0.5?'#fff':'#cdd9e5';
+      ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(v.toFixed(2),ox+j*cell+cell/2-1,oy+i*cell+cell/2);
+    }
+    ctx.fillStyle='#8b949e'; ctx.font='12px sans-serif';
+    for(let i=0;i<n;i++){ ctx.fillText(tokens[i],ox-14,oy+i*cell+cell/2); }
+    for(let j=0;j<n;j++){ ctx.fillText(tokens[j],ox+j*cell+cell/2,oy-14); }
+  }
+  return { run };
+})();
+
+/* auto-run on load */
+window.addEventListener('load',()=>{ PCA.run(); GMM.run(); XOR.run(); ATT.run(); });
+</script>
+</body>
+</html>
