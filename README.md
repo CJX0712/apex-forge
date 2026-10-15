@@ -1,5 +1,12 @@
 # ApexForge · 世界顶级零依赖 AI/ML 基础库
 
+<div align="center">
+
+[![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/CJX0712/apex-forge/blob/main/LICENSE) [![Language](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript)](https://github.com/CJX0712/apex-forge) [![Deps](https://img.shields.io/badge/dependencies-0-brightgreen)](https://github.com/CJX0712) [![Verified](https://img.shields.io/badge/invariants-verified-brightgreen)](https://github.com/CJX0712) [![Author](https://img.shields.io/badge/author-晨星-blueviolet)](https://github.com/CJX0712)
+
+</div>
+
+
 > **集大成 · 零重写 · 闭环交付** —— 每一个算法都站在世界顶级数值计算成果之上，每一行实现都附带一条可被独立验证的「硬不变量」。
 
 | | |
